@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="A seven-day Los Angeles trip planner with editable schedules, places, and planning tasks."
+    />
+    <meta name="theme-color" content="#f6f1e8" />
+    <title>Los Angeles — Trip Field Guide</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="trip-data.js"></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#day-schedule">Skip to the schedule</a>
+
+    <header class="site-header">
+      <a class="wordmark" href="#top" aria-label="LA trip planner home">
+        <span class="wordmark-mark" aria-hidden="true">LA</span>
+        <span>Trip Field Guide</span>
+      </a>
+      <button class="quiet-button" id="edit-mode-button" type="button" aria-pressed="false">
+        Edit planner
+      </button>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="page-title">
+        <div class="hero-copy">
+          <p class="eyebrow" id="trip-eyebrow"></p>
+          <h1 id="page-title"></h1>
+          <p class="hero-intro" id="trip-intro"></p>
+        </div>
+        <div class="hero-meta" aria-label="Trip details">
+          <div>
+            <span>Dates</span>
+            <strong id="trip-dates"></strong>
+          </div>
+          <div>
+            <span>Time zone</span>
+            <strong id="trip-timezone"></strong>
+          </div>
+          <div>
+            <span>Status</span>
+            <strong id="trip-status"></strong>
+          </div>
+        </div>
+      </section>
+
+      <nav class="day-navigation" aria-label="Daily itinerary">
+        <div class="day-tabs" id="day-tabs" role="tablist" aria-label="Choose a day"></div>
+      </nav>
+
+      <section class="schedule-section" id="day-schedule" aria-labelledby="day-title">
+        <div class="section-heading schedule-heading">
+          <div>
+            <p class="section-kicker" id="day-kicker"></p>
+            <h2 id="day-title"></h2>
+          </div>
+          <p id="day-summary"></p>
+        </div>
+        <div class="timeline" id="timeline" role="tabpanel" tabindex="0"></div>
+        <button class="add-button editor-only" id="add-schedule-item" type="button">
+          <span aria-hidden="true">+</span> Add schedule item
+        </button>
+      </section>
+
+      <section class="planning-grid" aria-label="Trip planning lists">
+        <article class="list-section" aria-labelledby="visit-title">
+          <div class="section-heading">
+            <div>
+              <p class="section-kicker">Keep on the radar</p>
+              <h2 id="visit-title">To Visit</h2>
+            </div>
+            <p>Ideas to consider before assigning them to a day.</p>
+          </div>
+          <ul class="visit-list" id="visit-list"></ul>
+          <button class="add-button editor-only" id="add-visit-item" type="button">
+            <span aria-hidden="true">+</span> Add place
+          </button>
+        </article>
+
+        <article class="list-section checklist-section" aria-labelledby="checklist-title">
+          <div class="section-heading">
+            <div>
+              <p class="section-kicker">Before departure</p>
+              <h2 id="checklist-title">Trip Checklist</h2>
+            </div>
+            <p id="checklist-progress" aria-live="polite"></p>
+          </div>
+          <ul class="checklist" id="checklist"></ul>
+          <button class="add-button editor-only" id="add-checklist-item" type="button">
+            <span aria-hidden="true">+</span> Add task
+          </button>
+        </article>
+      </section>
+
+      <section class="editor-panel editor-only" aria-labelledby="editor-panel-title">
+        <div>
+          <p class="section-kicker">Local editing</p>
+          <h2 id="editor-panel-title">Take your changes with you</h2>
+          <p>
+            Edits are saved in this browser. Download the updated data file to make them part of
+            the shared website.
+          </p>
+        </div>
+        <div class="editor-actions">
+          <button class="primary-button" id="export-button" type="button">
+            Download trip-data.js
+          </button>
+          <button class="text-button" id="reset-button" type="button">
+            Reset browser edits
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p id="footer-note"></p>
+      <a href="#top">Back to top <span aria-hidden="true">↑</span></a>
+    </footer>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
