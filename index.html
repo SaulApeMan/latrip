@@ -5,90 +5,149 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="A seven-day Los Angeles trip planner with editable schedules, places, and planning tasks."
+      content="An eight-day Los Angeles trip planner with editable schedules, places, and planning tasks."
     />
-    <meta name="theme-color" content="#f6f1e8" />
-    <title>Los Angeles — Trip Field Guide</title>
+    <meta name="theme-color" content="#191a19" />
+    <title>BlizzCon 2026 · Los Angeles Trip Planner</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
     <link rel="stylesheet" href="styles.css" />
     <script src="trip-data.js"></script>
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+      defer
+    ></script>
     <script src="app.js" defer></script>
   </head>
   <body>
-    <a class="skip-link" href="#day-schedule">Skip to the schedule</a>
-
-    <header class="site-header">
-      <a class="wordmark" href="#top" aria-label="LA trip planner home">
-        <span class="wordmark-mark" aria-hidden="true">LA</span>
-        <span>Trip Field Guide</span>
-      </a>
-      <button class="quiet-button" id="edit-mode-button" type="button" aria-pressed="false">
-        Edit planner
-      </button>
-    </header>
+    <a class="skip-link" href="#primary-content">Skip to trip content</a>
 
     <main id="top">
       <section class="hero" aria-labelledby="page-title">
         <div class="hero-copy">
-          <p class="eyebrow" id="trip-eyebrow"></p>
+          <p class="eyebrow hero-context">
+            <span id="trip-eyebrow"></span>
+            <span aria-hidden="true">·</span>
+            <span id="trip-dates"></span>
+          </p>
           <h1 id="page-title"></h1>
-          <p class="hero-intro" id="trip-intro"></p>
         </div>
-        <div class="hero-meta" aria-label="Trip details">
-          <div>
-            <span>Dates</span>
-            <strong id="trip-dates"></strong>
-          </div>
-          <div>
-            <span>Time zone</span>
-            <strong id="trip-timezone"></strong>
-          </div>
-          <div>
-            <span>Status</span>
-            <strong id="trip-status"></strong>
-          </div>
-        </div>
+        <figure class="hero-visual">
+          <img
+            src="makrura_red_1000.png"
+            alt="Makrura Red"
+            width="1000"
+            height="1000"
+          />
+          <figcaption>Los Angeles</figcaption>
+        </figure>
       </section>
 
-      <nav class="day-navigation" aria-label="Daily itinerary">
-        <div class="day-tabs" id="day-tabs" role="tablist" aria-label="Choose a day"></div>
+      <nav class="primary-navigation" aria-label="Trip sections">
+        <div class="primary-tabs" id="primary-tabs" role="tablist" aria-label="Choose a trip section"></div>
       </nav>
 
-      <section class="schedule-section" id="day-schedule" aria-labelledby="day-title">
-        <div class="section-heading schedule-heading">
-          <div>
-            <p class="section-kicker" id="day-kicker"></p>
-            <h2 id="day-title"></h2>
+      <div id="primary-content">
+        <section
+          class="schedule-section primary-panel"
+          id="day-schedule"
+          role="tabpanel"
+          tabindex="0"
+          aria-labelledby="day-title"
+        >
+          <div class="section-heading schedule-heading">
+            <div>
+              <p class="section-kicker" id="day-kicker"></p>
+              <h2 id="day-title"></h2>
+            </div>
+            <p id="day-summary"></p>
           </div>
-          <p id="day-summary"></p>
-        </div>
-        <div class="timeline" id="timeline" role="tabpanel" tabindex="0"></div>
-        <button class="add-button editor-only" id="add-schedule-item" type="button">
-          <span aria-hidden="true">+</span> Add schedule item
-        </button>
-      </section>
+          <div class="fixed-block-list" id="fixed-blocks-before"></div>
+          <div class="timeline" id="timeline"></div>
+          <div class="fixed-block-list" id="fixed-blocks-after"></div>
+          <section class="visit-picker" aria-labelledby="visit-picker-title">
+            <div class="visit-picker-copy">
+              <p class="section-kicker">Day planning</p>
+              <h3 id="visit-picker-title">Add from To Visit</h3>
+              <p>
+                Choose any saved place. The day keeps a reference to its master
+                To Visit record.
+              </p>
+            </div>
+            <div class="visit-picker-controls">
+              <label class="visit-picker-place">
+                <span>Place</span>
+                <select id="visit-place-select"></select>
+              </label>
+              <label class="visit-picker-time">
+                <span>Time</span>
+                <input id="visit-time-input" type="text" value="TBD" />
+              </label>
+              <button class="primary-button" id="add-from-visit-button" type="button">
+                Add to this day
+              </button>
+            </div>
+          </section>
+          <button class="add-button editor-only" id="add-schedule-item" type="button">
+            <span aria-hidden="true">+</span> Add schedule item
+          </button>
+        </section>
 
-      <section class="planning-grid" aria-label="Trip planning lists">
-        <article class="list-section" aria-labelledby="visit-title">
+        <section
+          class="list-section primary-panel"
+          id="to-visit-panel"
+          role="tabpanel"
+          tabindex="0"
+          aria-labelledby="visit-title"
+          hidden
+        >
           <div class="section-heading">
             <div>
               <p class="section-kicker">Keep on the radar</p>
               <h2 id="visit-title">To Visit</h2>
             </div>
-            <p>Ideas to consider before assigning them to a day.</p>
+            <p>
+              Ideas to consider before assigning them to a day. Prices are planning
+              estimates only; special exhibits, events, fees, and taxes are not
+              assumed included.
+            </p>
+          </div>
+          <div class="visit-category-toolbar">
+            <span class="visit-category-filter-label">Filter by category</span>
+            <div
+              class="visit-category-filters"
+              id="visit-category-filters"
+              role="group"
+              aria-label="Filter To Visit places by category"
+            ></div>
+            <p class="visit-category-status" id="visit-category-status" aria-live="polite"></p>
           </div>
           <ul class="visit-list" id="visit-list"></ul>
           <button class="add-button editor-only" id="add-visit-item" type="button">
             <span aria-hidden="true">+</span> Add place
           </button>
-        </article>
+        </section>
 
-        <article class="list-section checklist-section" aria-labelledby="checklist-title">
+        <section
+          class="list-section checklist-section primary-panel"
+          id="checklist-panel"
+          role="tabpanel"
+          tabindex="0"
+          aria-labelledby="checklist-title"
+          hidden
+        >
           <div class="section-heading">
             <div>
               <p class="section-kicker">Before departure</p>
@@ -100,8 +159,50 @@
           <button class="add-button editor-only" id="add-checklist-item" type="button">
             <span aria-hidden="true">+</span> Add task
           </button>
-        </article>
-      </section>
+        </section>
+
+        <section
+          class="map-section primary-panel"
+          id="map-panel"
+          role="tabpanel"
+          tabindex="0"
+          aria-labelledby="map-title"
+          hidden
+        >
+          <div class="section-heading">
+            <div>
+              <p class="section-kicker">Spatial overview</p>
+              <h2 id="map-title">LA Map</h2>
+            </div>
+            <p>Filter by day to review its planned stops in schedule order.</p>
+          </div>
+          <div class="map-planner-toolbar">
+            <label class="map-filter-control">
+              <span>Map view</span>
+              <select id="map-day-filter" aria-label="Filter map by trip day"></select>
+            </label>
+            <div class="map-route-summary">
+              <p id="map-route-status" role="status" aria-live="polite"></p>
+              <a
+                class="map-route-link"
+                id="map-google-route"
+                target="_blank"
+                rel="noopener noreferrer"
+                hidden
+              >
+                Open in Google Maps <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </div>
+          <ul class="map-legend" id="map-legend" aria-label="Map category legend"></ul>
+          <div class="map-shell">
+            <div id="la-map" aria-label="Interactive map of greater Los Angeles"></div>
+            <p class="map-fallback" id="map-fallback" role="status" hidden>
+              Map tiles couldn’t load. Pin details remain available in To Visit.
+            </p>
+          </div>
+        </section>
+      </div>
 
       <section class="editor-panel editor-only" aria-labelledby="editor-panel-title">
         <div>
