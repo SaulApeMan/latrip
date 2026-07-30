@@ -464,6 +464,21 @@ window.TRIP_DATA = {
       coordinates: { lat: 34.6320, lng: -120.6107 },
       mapLabel: "Vandenberg Space Force Base — Falcon 9 launch site",
       placeholder: false
+    },
+    {
+      id: "museum-of-jurassic-technology",
+      place: "Museum of Jurassic Technology",
+      note: "Unusual Culver City museum blending artistic, scientific, historical, and cabinet-of-curiosities displays.",
+      category: "Museum / science",
+      categoryKey: "science",
+      icon: "M",
+      officialUrl: "https://www.mjt.org/",
+      googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=Museum+of+Jurassic+Technology+9341+Venice+Boulevard+Culver+City+CA+90232",
+      estimatedTicket: "$15 · suggested adult admission / confirm",
+      estimatedParking: "Street / nearby structures · confirm",
+      coordinates: { lat: 34.02586, lng: -118.39508 },
+      mapLabel: "Museum of Jurassic Technology",
+      placeholder: false
     }
   ],
 
